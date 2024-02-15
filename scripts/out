@@ -1,0 +1,19 @@
+#!/bin/sh
+
+set -e
+
+# Read the parameters from stdin
+echo "Reading input parameters..."
+cat > /tmp/input.json
+source_params=$(jq -r '.source' < /tmp/input.json)
+params=$(jq -r '.params' < /tmp/input.json)
+artifact_path=$(jq -r '.artifact_path' < /tmp/input.json)
+
+# Extract source parameters
+repository_url=$(echo "$source_params" | jq -r '.repository_url')
+username=$(echo "$source_params" | jq -r '.username')
+password=$(echo "$source_params" | jq -r '.password')
+
+# Upload the artifact
+echo "Uploading artifact $artifact_path to Nexus repository..."
+curl -u "$username:$password" --upload-file "$artifact_path" "$repository_url"

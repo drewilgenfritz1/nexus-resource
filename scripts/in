@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -e
+
+# Read the parameters from stdin
+echo "Reading input parameters..."
+cat > /tmp/input.json
+source_params=$(jq -r '.source' < /tmp/input.json)
+version=$(jq -r '.version' < /tmp/input.json)
+artifact_name=$(jq -r '.params.artifact_name' < /tmp/input.json)
+destination_dir=$(jq -r '.params.destination_dir' < /tmp/input.json)
+
+# Extract source parameters
+repository_url=$(echo "$source_params" | jq -r '.repository_url')
+username=$(echo "$source_params" | jq -r '.username')
+password=$(echo "$source_params" | jq -r '.password')
+
+# Authenticate with Nexus API
+echo "Authenticating with Nexus API..."
+auth_header=$(curl -s -u "$username:$password" -X POST "$repository_url/service/rest/v1/session" | jq -r '.data.authToken')
+
+# Download the artifact
+echo "Downloading artifact $artifact_name version $version..."
+curl -s -H "Authorization: Bearer $auth_header" -o "$destination_dir/$artifact_name" "$repository_url/$artifact_name-$version"
