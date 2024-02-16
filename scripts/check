@@ -21,4 +21,4 @@ echo "Fetching list of artifacts..."
 artifacts=$(curl -s -H "Authorization: Bearer $auth_header" "$repository_url/service/rest/v1/search" | jq -r '.items[] | .name')
 
 # Output list of artifacts as JSON
-echo "$artifacts" | jq -n '[inputs | {name: .}]'
+echo "$artifacts" | jq -sR '[inputs | {name: .}]'
