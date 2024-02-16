@@ -2,10 +2,10 @@
 
 set -e
 
-cat > /tmp/input.json
-repository_url=$(jq -r '.source.repository_url' < /tmp/input.json)
-username=$(jq -r '.source.username' < /tmp/input.json)
-password=$(jq -r '.source.password' < /tmp/input.json)
+
+repository_url=$(jq -r '.source.repository_url')
+username=$(jq -r '.source.username')
+password=$(jq -r '.source.password')
 auth_header=$(curl -s -u "$username:$password" -X POST "$repository_url/service/rest/v1/session" | jq -r '.data.authToken')
 
 artifacts=$(curl -s -H "Authorization: Bearer $auth_header" "$repository_url/service/rest/v1/search" | jq -r '.items[] | .name')
