@@ -1,8 +1,14 @@
-# Use an appropriate base image
-FROM alpine:latest
+# Use Ubuntu as the base image
+FROM ubuntu:latest
 
-# Install necessary tools (e.g., curl, jq)
-RUN apk add --no-cache curl jq
+# Install necessary tools (jq and curl)
+RUN apt-get update && apt-get install -y \
+    jq \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create directory for scripts
+RUN mkdir -p /opt/resource
 
 # Copy your resource script into the image
 COPY scripts /opt/resource
