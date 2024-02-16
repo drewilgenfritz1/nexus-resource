@@ -4,7 +4,7 @@ set -e
 
 # Read the parameters from stdin
 echo "Reading input parameters..."
-cat /tmp/input.json
+touch /tmp/input.json
 source_params=$(jq -r '.source' < /tmp/input.json)
 
 # Extract source parameters
