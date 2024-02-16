@@ -4,14 +4,15 @@ set -e
 
 # Read the parameters from stdin
 echo "Reading input parameters..."
-cat > /tmp/input.json
+cat /tmp/input.json
 source_params=$(jq -r '.source' < /tmp/input.json)
 
 # Extract source parameters
 repository_url=$(echo "$source_params" | jq -r '.repository_url')
 username=$(echo "$source_params" | jq -r '.username')
 password=$(echo "$source_params" | jq -r '.password')
-
+echo $repository_url
+echo $username
 # Authenticate with Nexus API
 echo "Authenticating with Nexus API..."
 auth_header=$(curl -s -u "$username:$password" -X POST "$repository_url/service/rest/v1/session" | jq -r '.data.authToken')
@@ -19,6 +20,6 @@ auth_header=$(curl -s -u "$username:$password" -X POST "$repository_url/service/
 # Get list of artifacts
 echo "Fetching list of artifacts..."
 artifacts=$(curl -s -H "Authorization: Bearer $auth_header" "$repository_url/service/rest/v1/search" | jq -r '.items[] | .name')
-
+echo "you made it"
 # Output list of artifacts as JSON
 echo "$artifacts" | jq -sR '[inputs | {name: .}]'
