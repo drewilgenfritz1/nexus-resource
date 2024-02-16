@@ -1,11 +1,8 @@
-# Use Ubuntu as the base image
-FROM ubuntu:latest
+# Use an Alpine Linux base image
+FROM alpine:latest
 
-# Install necessary tools (jq and curl)
-RUN apt-get update && apt-get install -y \
-    jq \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+# Install curl and jq
+RUN apk --no-cache add curl jq
 
 # Create directory for scripts
 RUN mkdir -p /opt/resource
