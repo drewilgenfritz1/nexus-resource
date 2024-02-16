@@ -1,0 +1,9 @@
+{
+  "source": {
+    "repository_url": "https://example.com/nexus/repository/maven-releases",
+    "username": "your_username",
+    "password": "your_password"
+  },
+  "version": null,
+  "params": {}
+}

@@ -2,7 +2,7 @@
 
 set -e
 
-touch /tmp/input.json
+cat < /tmp/input.json
 source_params=$(jq -r '.source' < /tmp/input.json)
 
 repository_url=$(echo "$source_params" | jq -r '.repository_url')
